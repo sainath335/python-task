@@ -1,0 +1,21 @@
+pipeline {
+    agent {
+         label 'jdk8'
+          }
+    stages {
+        stage('SourceCode') {
+            steps {
+                git branch: 'master', url: 'https://github.com/sainath335/python-task.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'python3 -m pip install flake8'
+                sh 'pip install pytest pytest-azurepipelines'
+                sh 'pip install pytest_cov'
+                sh 'pytest --junitxml=junit/test-results.xml '
+            }
+        }       
+    }
+}
